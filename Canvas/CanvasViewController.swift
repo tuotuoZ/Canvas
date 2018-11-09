@@ -71,13 +71,35 @@ class CanvasViewController: UIViewController {
 
             let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveEmoji(sender:)))
             newlyCreatedFace.addGestureRecognizer(panGestureRecognizer)
-
+            
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(deleteEmoji(sender:)))
+            tapGestureRecognizer.numberOfTapsRequired = 2
+            newlyCreatedFace.addGestureRecognizer(tapGestureRecognizer)
+            
+            UIView.animate(withDuration:0.1, delay: 0.0,
+                           options: [],
+                           animations: { () -> Void in
+                            self.newlyCreatedFace.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            }, completion: nil)
             
             
         }
         else if sender.state == .changed{
             newlyCreatedFace.center = CGPoint(x: newlyCreatedFaceOriginalCenter.x + translation.x, y: newlyCreatedFaceOriginalCenter.y + translation.y)
         }
+        else if sender.state == .ended{
+            UIView.animate(withDuration:0.1, delay: 0.0,
+                           options: [],
+                           animations: { () -> Void in
+                            self.newlyCreatedFace.transform = CGAffineTransform(scaleX: 1, y: 1)
+            }, completion: nil)
+        }
+    }
+    
+    // Delete a emoji if a user double tapped it
+    @objc func deleteEmoji(sender: UITapGestureRecognizer){
+        let imageView = sender.view
+        imageView?.removeFromSuperview()
     }
     
     // Move a existing emoji
@@ -88,18 +110,31 @@ class CanvasViewController: UIViewController {
             
             newlyCreatedFace = sender.view as! UIImageView
             newlyCreatedFaceOriginalCenter = newlyCreatedFace.center
-            
+            UIView.animate(withDuration:0.1, delay: 0.0,
+                           options: [],
+                           animations: { () -> Void in
+                            self.newlyCreatedFace.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            }, completion: nil)
             
         }
         else if sender.state == .changed{
             newlyCreatedFace.center = CGPoint(x: newlyCreatedFaceOriginalCenter.x + translation.x, y: newlyCreatedFaceOriginalCenter.y + translation.y)
+            print(translation.x)
+            print(translation.y)
+            
         }
         else if sender.state == .ended{
-            if (newlyCreatedFaceOriginalCenter.y + translation.y) > CGFloat(240){
+            if (newlyCreatedFaceOriginalCenter.y + translation.y) > CGFloat(500){
                 newlyCreatedFace.center = newlyCreatedFaceOriginalCenter
                 
                 
             }
+            UIView.animate(withDuration:0.1, delay: 0.0,
+                           options: [],
+                           animations: { () -> Void in
+                            self.newlyCreatedFace.transform = CGAffineTransform(scaleX: 1, y: 1)
+            }, completion: nil)
+
         }
   
         
