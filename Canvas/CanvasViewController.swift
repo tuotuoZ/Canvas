@@ -89,10 +89,20 @@ class CanvasViewController: UIViewController {
             newlyCreatedFace = sender.view as! UIImageView
             newlyCreatedFaceOriginalCenter = newlyCreatedFace.center
             
+            
         }
         else if sender.state == .changed{
             newlyCreatedFace.center = CGPoint(x: newlyCreatedFaceOriginalCenter.x + translation.x, y: newlyCreatedFaceOriginalCenter.y + translation.y)
         }
+        else if sender.state == .ended{
+            if (newlyCreatedFaceOriginalCenter.y + translation.y) > CGFloat(240){
+                newlyCreatedFace.center = newlyCreatedFaceOriginalCenter
+                
+                
+            }
+        }
+  
+        
     }
     /*
     // MARK: - Navigation
